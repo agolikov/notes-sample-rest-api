@@ -64,7 +64,7 @@ Maybe you wish to deploy this app the the cloud. One of easy and free option can
  6. Finally release the container by running.
   ```heroku container:release -a notes-api web```
     > ```notes-api``` is the name of the app in the heroku, please change it.
-    
+
 ###
   The last line of ```DOCKERFILE```  is needed for runing in heroku environment:
   ```CMD ASPNETCORE_URLS=http://*:$PORT dotnet notes.api.dll```
@@ -72,4 +72,4 @@ Maybe you wish to deploy this app the the cloud. One of easy and free option can
   ```ENTRYPOINT ["dotnet", "notes.api.dll"]```
 ---
 ### Screenshot ###
-[![Note management swagger demo](screen.png)]
+![Note management swagger demo](screen.png)
