@@ -70,4 +70,4 @@ Maybe you wish to deploy this app the the cloud. One of easy and free option can
   ```ENTRYPOINT ["dotnet", "notes.api.dll"]```
 ---
 ### Screenshot ###
-[![Note management swagger demo](screen.png)]
+![Note management swagger demo](screen.png)
