@@ -34,7 +34,7 @@
 
  1. Install .NET 5 on you local machine
  2. Create and connect to PostgreeSQL database server.
- 3. Fill the files with the valid database credentials:
+ 3. Fill a valid database credentials in:
     ```notes.data/appsettings.json```
     ```notes.api/appsettings.json```
  4. Start command line and navigate to ```src``` folder.
@@ -60,15 +60,14 @@ Maybe you wish to deploy this app the the cloud. One of easy and free option can
   ```heroku container:login```
  5. Build and push docker container to the heroku server.
   ```heroku container:push -a notes-api web```
-      > ```notes-api``` is the name of the app in the heroku, please change it.
+    >```notes-api```is the name of the app in the heroku, please change it.
  6. Finally release the container by running.
   ```heroku container:release -a notes-api web```
-    > ```notes-api``` is the name of the app in the heroku, please change it.
-
-The last line of ```DOCKERFILE```  is needed for runing in heroku environment:
+    >```notes-api```is the name of the app in the heroku, please change it.
+ 7. The last line of ```DOCKERFILE```  is needed for runing in heroku environment:
   ```CMD ASPNETCORE_URLS=http://*:$PORT dotnet notes.api.dll```
-if you deploy to the other place you can replace this to:
+ If you deploy to the other place you can replace this to:
   ```ENTRYPOINT ["dotnet", "notes.api.dll"]```
 ---
 ### Screenshot ###
-![Note management swagger demo](screen.png)
+[![Note management swagger demo](screen.png)]
