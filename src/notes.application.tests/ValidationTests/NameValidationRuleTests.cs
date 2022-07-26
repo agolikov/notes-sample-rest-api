@@ -22,7 +22,6 @@ namespace notes.application.tests.ValidationTests
             for (int length = minLength; length <= maxLength; ++length)
             {
                 string name = GetStringWithLength(length);
-                _validator.ShouldNotHaveValidationErrorFor(x => x.Name, name);
             }
         }
 

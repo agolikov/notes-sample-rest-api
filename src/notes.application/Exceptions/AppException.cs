@@ -31,7 +31,7 @@ namespace notes.application.Exceptions
 
             if (messageFormat == null)
             {
-                messageFormat = rm.GetString(ErrorCodes.UnexpectedError);
+                messageFormat = rm.GetString(Code);
             }
 
             return string.Format(messageFormat, MessageParams);
