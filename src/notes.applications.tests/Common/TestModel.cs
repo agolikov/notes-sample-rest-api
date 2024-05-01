@@ -1,4 +1,4 @@
-﻿namespace notes.application.tests.Common
+﻿namespace notes.applications.tests.Common
 {
     public class TestModel
     {

@@ -1,19 +1,17 @@
-﻿using AutoFixture;
+﻿using System.Linq.Expressions;
+using AutoFixture;
 using Moq;
 using notes.application.Interfaces;
 using notes.application.Models.Note;
 using notes.application.Services;
-using notes.application.tests.Common;
+using notes.applications.tests.Common;
 using notes.data.Entities;
 using notes.data.Exceptions;
 using notes.data.Interfaces;
 using NUnit.Framework;
-using System;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using ErrorCodes = notes.application.Exceptions.ErrorCodes;
 
-namespace notes.application.tests.ServiceTests
+namespace notes.applications.tests.ServiceTests
 {
     [TestFixture(Category = "Unit")]
     public class NotesServiceTests : TestsBase
@@ -25,15 +23,12 @@ namespace notes.application.tests.ServiceTests
         {
             _fixture = CreateFixture();
             _mapper = CreateMapper();
-            _userRepositoryMock = new Mock<IUserRepository>();
-            _noteRepositoryMock = new Mock<INoteRepository>();
-            _tagRepositoryMock = new Mock<ITagRepository>();
-
+            
             _noteService = new NotesService(
                 _mapper,
-                _noteRepositoryMock.Object,
-                _userRepositoryMock.Object,
-                _tagRepositoryMock.Object);
+                NoteRepositoryMock.Object,
+                UserRepositoryMock.Object,
+                TagRepositoryMock.Object);
         }
 
         [Test]
@@ -58,7 +53,7 @@ namespace notes.application.tests.ServiceTests
 
             await _noteService.CreateNoteAsync(note, user.Id);
 
-            _noteRepositoryMock.Verify(t => t.InsertOrUpdateAsync(It.Is<Note>(t => t.Text == note.Text), user.Id));
+            NoteRepositoryMock.Verify(t => t.InsertOrUpdateAsync(It.Is<Note>(t => t.Text == note.Text), user.Id));
         }
 
         [Test]
@@ -82,7 +77,7 @@ namespace notes.application.tests.ServiceTests
                 .With(t => t.CreatedBy, user.Id)
                 .Create();
 
-            _noteRepositoryMock
+            NoteRepositoryMock
                 .Setup(t => t.FindOneAsync(It.IsAny<Expression<Func<Note, bool>>>()))
                 .ReturnsAsync(note);
 
@@ -94,7 +89,7 @@ namespace notes.application.tests.ServiceTests
             await _noteService.UpdateNoteAsync(updateModel, user.Id);
 
             //Assert
-            _noteRepositoryMock.Verify(t => t.InsertOrUpdateAsync(It.IsAny<Note>(), user.Id), Times.Once);
+            NoteRepositoryMock.Verify(t => t.InsertOrUpdateAsync(It.IsAny<Note>(), user.Id), Times.Once);
         }
 
         [Test]
@@ -106,13 +101,13 @@ namespace notes.application.tests.ServiceTests
                 .With(t => t.CreatedBy, user.Id)
                 .Create();
 
-            _noteRepositoryMock
+            NoteRepositoryMock
                 .Setup(t => t.FindOneAsync(It.IsAny<Expression<Func<Note, bool>>>()))
                 .ReturnsAsync(note);
 
             await _noteService.DeleteNoteAsync(note.Id, user.Id);
 
-            _noteRepositoryMock.Verify(t => t.DeleteAsync(note.Id, user.Id, false));
+            NoteRepositoryMock.Verify(t => t.DeleteAsync(note.Id, user.Id, false));
         }
 
         [Test]

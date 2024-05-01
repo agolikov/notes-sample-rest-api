@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace notes.application.tests.Extensions
+namespace notes.applications.tests.Extensions
 {
     public static class TestExtensions
     {

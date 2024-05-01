@@ -1,0 +1,22 @@
+﻿services:
+  notes.api:
+    image: ${DOCKER_REGISTRY-}notes.api
+    build:
+      context: .
+      dockerfile: notes.api/Dockerfile
+    depends_on:
+      - notes.database
+  notes.database:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: notes_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+        - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+volumes:
+  postgres_data:
+    driver: local

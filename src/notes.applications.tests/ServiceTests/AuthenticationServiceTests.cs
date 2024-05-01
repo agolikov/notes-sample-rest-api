@@ -1,25 +1,23 @@
-﻿using AutoFixture;
+﻿using System.Linq.Expressions;
+using AutoFixture;
 using Microsoft.Extensions.Options;
 using Moq;
 using notes.application.Exceptions;
 using notes.application.Models.User;
 using notes.application.Services;
-using notes.application.tests.Common;
-using notes.application.tests.Extensions;
+using notes.applications.tests.Common;
+using notes.applications.tests.Extensions;
 using notes.data.Entities;
 using notes.data.Interfaces;
 using NUnit.Framework;
-using System;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace notes.application.tests.ServiceTests
+namespace notes.applications.tests.ServiceTests
 {
     [TestFixture(Category = "Unit")]
     public class AuthenticationServiceTests : TestsBase
     {
         private AuthenticationService _authenticationService;
-        private Mock<IOptions<Settings.Settings>> _settingsMock;
+        private Mock<IOptions<application.Settings.Settings>> _settingsMock;
 
         [SetUp]
         public void MockSetup()
@@ -27,18 +25,16 @@ namespace notes.application.tests.ServiceTests
             _fixture = CreateFixture();
             _mapper = CreateMapper();
 
-            _settingsMock = new Mock<IOptions<Settings.Settings>>();
+            _settingsMock = new Mock<IOptions<application.Settings.Settings>>();
 
-            _settingsMock.Setup(t => t.Value).Returns(new Settings.Settings
+            _settingsMock.Setup(t => t.Value).Returns(new application.Settings.Settings
             {
                 SecretKey = "f1b95a6a-d537-4cff-94a4-2772ed87d209"
             });
-
-            _userRepositoryMock = new Mock<IUserRepository>();
-
+            
             _authenticationService =
-                new AuthenticationService(_mapper, _userRepositoryMock.Object,
-                    new Settings.Settings
+                new AuthenticationService(_mapper, UserRepositoryMock.Object,
+                    new application.Settings.Settings
                     {
                         SecretKey = Guid.NewGuid().ToString()
                     });
@@ -52,7 +48,7 @@ namespace notes.application.tests.ServiceTests
 
             await _authenticationService.SignUpAsync(signUpModel);
 
-            _userRepositoryMock.Verify(t =>
+            UserRepositoryMock.Verify(t =>
                 t.InsertOrUpdateAsync(It.Is<User>(
                     t => t.Email == signUpModel.Email), It.IsAny<Guid>()));
         }
@@ -66,7 +62,7 @@ namespace notes.application.tests.ServiceTests
                 .With(t => t.Email, user.Email)
                 .Create();
 
-            _userRepositoryMock
+            UserRepositoryMock
                 .Setup(t => t.FindOneAsync(It.Is<Expression<Func<User, bool>>>(
                     t => t.ToString().Contains("Email"))))
                 .ReturnsAsync(user);
@@ -90,7 +86,7 @@ namespace notes.application.tests.ServiceTests
                 .With(t => t.Password, password)
                 .Create();
 
-            _userRepositoryMock
+            UserRepositoryMock
                 .Setup(t => t.FindOneAsync(It.Is<Expression<Func<User, bool>>>(
                     t => t.ToString().Contains("UserName"))))
                 .ReturnsAsync(user.ShallowCopy());
@@ -129,7 +125,7 @@ namespace notes.application.tests.ServiceTests
                 .With(t => t.Email, user.Email)
                 .Create();
 
-            _userRepositoryMock
+            UserRepositoryMock
                 .Setup(t => t.FindOneAsync(It.Is<Expression<Func<User, bool>>>(
                     t => t.ToString().Contains("UserName"))))
                 .ReturnsAsync(user.ShallowCopy());

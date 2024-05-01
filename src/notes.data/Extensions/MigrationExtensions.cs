@@ -1,0 +1,2 @@
+namespace notes.data.Extensions;
+

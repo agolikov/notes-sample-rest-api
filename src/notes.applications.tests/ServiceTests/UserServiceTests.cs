@@ -1,19 +1,17 @@
-﻿using AutoFixture;
+﻿using System.Linq.Expressions;
+using AutoFixture;
 using Moq;
 using notes.application.Exceptions;
 using notes.application.Extensions;
 using notes.application.Interfaces;
 using notes.application.Models.User;
 using notes.application.Services;
-using notes.application.tests.Common;
+using notes.applications.tests.Common;
 using notes.data.Entities;
 using notes.data.Interfaces;
 using NUnit.Framework;
-using System;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace notes.application.tests.ServiceTests
+namespace notes.applications.tests.ServiceTests
 {
     [TestFixture(Category = "Unit")]
     public class UserServiceTests : TestsBase
@@ -25,19 +23,16 @@ namespace notes.application.tests.ServiceTests
         {
             _fixture = CreateFixture();
             _mapper = CreateMapper();
-
-            _userRepositoryMock = new Mock<IUserRepository>();
-
-            _userService = new UserService(_mapper, _userRepositoryMock.Object);
+            
+            _userService = new UserService(_mapper, UserRepositoryMock.Object);
         }
 
         [Test]
         public async Task UserService_GetUserAsync_OK()
         {
             Guid userId = Guid.NewGuid();
-            _userRepositoryMock.Setup(t => t.FindOneAsync(
-                    It.IsAny<Expression<Func<User, bool>>>(),
-                    null))
+            UserRepositoryMock.Setup(t => t.FindOneAsync(
+                    It.IsAny<Expression<Func<User, bool>>>()))
                 .ReturnsAsync(() => new User
                 {
                     Id = userId
@@ -64,7 +59,7 @@ namespace notes.application.tests.ServiceTests
                 async () => await _userService.ChangeUserPasswordAsync(changePasswordModel));
 
             //Assert
-            Assert.AreEqual(exception.Code, ErrorCodes.EntityNotFound);
+            Assert.AreEqual(exception.Code, ErrorCodes.EmailNotFound);
             Assert.AreEqual(exception.EntityId, email);
         }
 
@@ -83,18 +78,17 @@ namespace notes.application.tests.ServiceTests
 
             //Assert
             Assert.AreEqual(exception.Code, ErrorCodes.UserPasswordIsIncorrect);
-            Assert.AreEqual(exception.EntityId, user.Id);
+            Assert.That(user.Email, Is.EqualTo(exception.EntityId));
         }
 
         [Test]
         public async Task UserService_ChangeUserPasswordAsync_OK()
         {
-            string pass = "123";
+            string pass = "current";
+            string newPass = "new";
             var user = MockUser(pass);
-            Guid modifierId = Guid.NewGuid();
-            string newPass = "345";
-            DataExtensions.CreatePasswordHash(newPass, out byte[] newHash, out byte[] newSalt);
-
+            Guid modifierId = user.CreatedBy;
+            
             var changeModel = _fixture.Build<ChangePasswordModel>()
                 .With(u => u.Email, user.Email)
                 .With(t => t.OldPassword, pass)
@@ -103,7 +97,7 @@ namespace notes.application.tests.ServiceTests
 
             await _userService.ChangeUserPasswordAsync(changeModel);
 
-            _userRepositoryMock.Verify(t => t.InsertOrUpdateAsync(It.Is<User>(u => u.Id == user.Id), modifierId));
+            UserRepositoryMock.Verify(t => t.InsertOrUpdateAsync(It.Is<User>(u => u.Id == user.Id), modifierId));
         }
     }
 }

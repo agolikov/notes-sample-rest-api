@@ -47,7 +47,7 @@ namespace notes.data.tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             var entity = await _testRepository.FindOneAsync(t => t.Id == testEntity.Id);
-            Assert.AreSame(entity, testEntity);
+            Assert.That(entity,Is.SameAs(testEntity));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace notes.data.tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             var entity = await _testRepository.FindOneAsync(t => t.Id == testEntity.Id);
-            Assert.IsNull(entity);
+            Assert.That(entity,Is.Null);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace notes.data.tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             var entity = await _testRepository.FindOneAsync(t => t.Id == testEntity.Id);
-            Assert.AreSame(entity, testEntity);
+            Assert.That(testEntity,Is.SameAs(entity));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace notes.data.tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             var entity = await _testRepository.FindOneAsync(t => t.Id == testEntity.Id);
-            Assert.IsNull(entity);
+            Assert.That(entity, Is.Null);
         }
 
         [Test]
@@ -100,8 +100,8 @@ namespace notes.data.tests.Repositories
                 .Create();
 
             var inserted = await _testRepository.InsertOrUpdateAsync(testEntity, modifiedBy);
-
-            Assert.AreSame(testEntity, inserted);
+            
+            Assert.That(testEntity,Is.SameAs(inserted));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace notes.data.tests.Repositories
 
             var updated = await _testRepository.InsertOrUpdateAsync(testEntityUpdated, modifiedBy);
 
-            Assert.AreSame(updated, testEntityUpdated);
+            Assert.That(updated,Is.SameAs(testEntityUpdated));
         }
 
         [Test]
@@ -146,8 +146,9 @@ namespace notes.data.tests.Repositories
             var exception = Assert.ThrowsAsync<DalException>(async () => await _testRepository.InsertOrUpdateAsync(testEntityUpdated, modifiedBy));
 
             //Assert
-            Assert.AreEqual(exception.Code, ErrorCodes.VersionIsNotCorrect);
-            Assert.AreEqual(exception.EntityId, testEntityUpdated.Id);
+            Assert.That(exception,Is.Not.Null);
+            Assert.That(exception.Code,Is.SameAs(ErrorCodes.VersionIsNotCorrect));
+            Assert.That(exception.EntityId,Is.EqualTo(testEntityUpdated.Id));
         }
 
         [Test]
@@ -166,7 +167,7 @@ namespace notes.data.tests.Repositories
             var deletedEntity = await _dbContext.TestEntities.FirstOrDefaultAsync(t => t.Id == testEntity.Id);
 
             testEntity.IsDeleted = true;
-            Assert.AreSame(deletedEntity, testEntity);
+            Assert.That(deletedEntity,Is.SameAs(testEntity));
         }
 
         [Test]
@@ -180,8 +181,9 @@ namespace notes.data.tests.Repositories
             var exception = Assert.ThrowsAsync<DalException>(async () => await _testRepository.DeleteAsync(testEntity.Id, modifiedBy));
 
             //Assert
-            Assert.AreEqual(exception.Code, ErrorCodes.EntityNotFound);
-            Assert.AreEqual(exception.EntityId, testEntity.Id);
+            Assert.That(exception,Is.Not.Null);
+            Assert.That(exception.Code,Is.SameAs(ErrorCodes.EntityNotFound));
+            Assert.That(exception.EntityId,Is.EqualTo(testEntity.Id));
         }
 
         [Test]
@@ -199,7 +201,7 @@ namespace notes.data.tests.Repositories
             //Assert
             var deletedEntity = await _dbContext.TestEntities.FirstOrDefaultAsync(t => t.Id == testEntity.Id);
 
-            Assert.IsNull(deletedEntity);
+            Assert.That(deletedEntity,Is.Null);
         }
 
         [Test]
@@ -217,7 +219,8 @@ namespace notes.data.tests.Repositories
             var entity = await _testRepository.FindManyAsync(0, pageSize, true,
                 null, null, null);
 
-            Assert.AreEqual(entity.Count(), pageSize);
+            Assert.That(entity,Is.Not.Null);
+            Assert.That(entity.Count(),Is.EqualTo(pageSize));
         }
     }
 }

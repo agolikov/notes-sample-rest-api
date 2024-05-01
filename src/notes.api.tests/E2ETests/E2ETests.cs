@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
+using notes.api.Controllers;
 
 namespace notes.api.tests.E2ETests
 {
@@ -26,12 +27,11 @@ namespace notes.api.tests.E2ETests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            var startupAssembly = typeof(Startup).GetTypeInfo().Assembly;
+            var startupAssembly = typeof(AuthenticationController).GetTypeInfo().Assembly;
 
             var contentRoot = GetProjectPath(startupAssembly);
 
             _testServer = new TestServer((WebHost.CreateDefaultBuilder(null)
-                .UseStartup<TestStartup>()
                 .UseContentRoot(contentRoot)
                 .UseEnvironment(TestEnvironment)));
 
@@ -46,6 +46,7 @@ namespace notes.api.tests.E2ETests
             response.EnsureSuccessStatusCode();
             return response;
         }
+        
         private async Task<HttpResponseMessage> SignIn(SignInModel signUpModel)
         {
             var response = await _client.PostAsync(@"auth/signin", signUpModel.ToJsonContent());

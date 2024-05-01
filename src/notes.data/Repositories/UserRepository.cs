@@ -3,9 +3,9 @@ using notes.data.Interfaces;
 
 namespace notes.data.Repositories
 {
-    public class Repository : Repository<User>, IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
-        public Repository(AppDbContext appContext) : base(appContext)
+        public UserRepository(AppDbContext appContext) : base(appContext)
         {
         }
     }

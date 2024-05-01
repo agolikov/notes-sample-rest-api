@@ -1,7 +1,7 @@
 ﻿using notes.application.Extensions;
 using NUnit.Framework;
 
-namespace notes.application.tests.ExtensionTests
+namespace notes.applications.tests.ExtensionTests
 {
     [TestFixture(Category = "Unit")]
     public class DataExtensionsTests

@@ -2,7 +2,7 @@
 
 namespace notes.data.tests.Test
 {
-    class TestRepository : Repository<TestEntity>
+    public class TestRepository : Repository<TestEntity>
     {
         public TestRepository(TestDbContext context) : base(context)
         {

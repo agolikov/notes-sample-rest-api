@@ -1,8 +1,8 @@
 ﻿using FluentValidation.TestHelper;
-using notes.application.tests.Common;
+using notes.applications.tests.Common;
 using NUnit.Framework;
 
-namespace notes.application.tests.ValidationTests
+namespace notes.applications.tests.ValidationTests
 {
     [TestFixture(Category = "Unit")]
     public class NameValidationRuleTests : TestsBase

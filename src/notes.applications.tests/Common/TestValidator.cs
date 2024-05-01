@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using notes.application.Extensions;
 
-namespace notes.application.tests.Common
+namespace notes.applications.tests.Common
 {
     public class TestValidator : AbstractValidator<TestModel>
     {

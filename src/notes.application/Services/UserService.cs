@@ -25,9 +25,7 @@ namespace notes.application.Services
         {
             var user = await _userRepository.FindOneAsync(t => t.Id == userId);
             if (user == null)
-            {
                 throw userId.EntityNotFoundException();
-            }
 
             return _mapper.Map<User, UserModel>(user);
         }

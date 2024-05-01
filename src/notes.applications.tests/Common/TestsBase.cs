@@ -1,24 +1,22 @@
-﻿using AutoFixture;
+﻿using System.Linq.Expressions;
+using AutoFixture;
 using AutoMapper;
 using Moq;
 using notes.application.Extensions;
 using notes.application.Mapper;
 using notes.data.Entities;
 using notes.data.Interfaces;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
 
-namespace notes.application.tests.Common
+namespace notes.applications.tests.Common
 {
     public class TestsBase
     {
         protected Fixture _fixture;
         protected IMapper _mapper;
-        protected Mock<IUserRepository> _userRepositoryMock;
-        protected Mock<INoteRepository> _noteRepositoryMock;
-        protected Mock<ITagRepository> _tagRepositoryMock;
-
+        protected readonly Mock<IUserRepository> UserRepositoryMock = new Mock<IUserRepository>();
+        protected readonly Mock<INoteRepository> NoteRepositoryMock = new Mock<INoteRepository>();
+        protected readonly Mock<ITagRepository> TagRepositoryMock = new Mock<ITagRepository>();
+        
         internal Fixture CreateFixture()
         {
             var fixture = new Fixture();
@@ -51,7 +49,7 @@ namespace notes.application.tests.Common
                 .With(t => t.PasswordSalt, salt)
                 .Create();
 
-            _userRepositoryMock
+            UserRepositoryMock
                 .Setup(t => t.FindOneAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<string[]>()))
                 .ReturnsAsync(user);
 

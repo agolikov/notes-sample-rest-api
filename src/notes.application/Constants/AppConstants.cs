@@ -2,7 +2,7 @@
 {
     public class AppConstants
     {
-        public const string AppName = "Notes API v1 Latest";
+        public const string AppName = "Notes API";
 
         public const string AppVersion = "v1";
 
