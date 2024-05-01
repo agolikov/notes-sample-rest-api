@@ -1,49 +1,47 @@
+# RestAPI example: Notes API
 
-# Restful API example: User notes management.
+#### The project is an starter example of REST API based on .NET 8.
 
-### What is this repository for? ###
+This API provides endpoints for user authentication, CRUD operations on notes, and user-related functionalities like changing passwords.
+#### Paths 
 
-* The project is an example of REST API based on .NET 5.
-* If you want to become familiar with .NET it is the good point to start.
-* The API is providing simple user JWT authorization.
-* User can manage own notes: Create, Update, Delete, Search.
-* User note entity consists of the following properties:
-    - Text
-    - Title
-    - Tags
+1. Authentication:
+    - /auth/signup: POST request for user signup
+    - /auth/signin: POST request for user signin
+2. Notes:
+    - GET request to retrieve notes with various filtering options
+    - POST request to create a new note
+    - PUT request to update an existing note
+    - DELETE request to delete a note by ID
+3. User:
+    - GET request to retrieve user information
+    - POST request to change user password
+#### Security
 
-### Tech stack and libraries ####
+- Bearer token authentication using JWT Authorization header.
 
- * .NET 5
- * Entity Framework Core 5
- * Entity Framework PostgreSQL 
+#### Tech stack and libraries
+
+ * .NET 8
+ * Entity Framework
+ * PostgreSQL 
  * Automapper
  * FluentValidation
  * Identity Model JWT
  * Swagger
  * Docker
-
-### Testing tools ####
-
  * AutoFixture
  * Moq
  * Nunit
- * Entity Framework InMemory Database
+#### Setup instructions
 
-### How do I get set up? ###
-
- 1. Install .NET 5 on you local machine
- 2. Create and connect to PostgreeSQL database server.
- 3. Fill a valid database credentials in:
-    ```notes.data/appsettings.json```
-    ```notes.api/appsettings.json```
- 4. Start command line and navigate to ```src``` folder.
- 5. Initialize database scheme by running:
-    ```dotnet ef database update --project notes.data```
- 5. Start the project:
-    ```dotnet run --project notes.api```
-
-### Sample Usage ###
+ 1. Install docker.
+ 2. Install .NET 8 SDK.
+ 3. Install developers certificates to able to run app locally. [Use this tutorial](https://learn.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-8.0)
+ 4. Navigate to project ```src``` directory and run:
+	```docker compose up```
+#### Sample Usage
+ 
  1. Navigate to in the browser:
    ```https://localhost:5001/swagger/index.html```
  2. Try ```auth/signup``` out with sample credentials.
@@ -51,23 +49,6 @@
  5. Click ```Authorize``` with the value: 'Bearer ```token```'
  6. Try GET POST PUT DELETE `/notes` endpoints.
 
-### Deployment to the cloud ###
-Maybe you wish to deploy this app the the cloud. One of easy and free option can be using the heroku provider. To do that:
- 1. Get an heroku account, and create an application.
- 2. Install Heroku CLI.
- 3. Navigate to ```src``` folder.
- 4. Login to heroku.
-  ```heroku container:login```
- 5. Build and push docker container to the heroku server.
-  ```heroku container:push -a notes-api web```
-    >```notes-api```is the name of the app in the heroku, please change it.
- 6. Finally release the container by running.
-  ```heroku container:release -a notes-api web```
-    >```notes-api```is the name of the app in the heroku, please change it.
- 7. The last line of ```DOCKERFILE```  is needed for runing in heroku environment:
-  ```CMD ASPNETCORE_URLS=http://*:$PORT dotnet notes.api.dll```
- If you deploy to the other place you can replace this to:
-  ```ENTRYPOINT ["dotnet", "notes.api.dll"]```
----
-### Screenshot ###
+#### Screenshot
+
 ![Note management swagger demo](screen.png)
