@@ -2,7 +2,7 @@
 {
     public class AppConstants
     {
-        public const string AppName = "Notes API";
+        public const string AppName = "Note Management API";
 
         public const string AppVersion = "v1";
 
@@ -13,10 +13,5 @@
         /// Password should have length between 8 and 16 inclusive.
         /// </summary>
         public const string PasswordRegex = "^(?=.{8,16}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9]).*$";
-
-        public static class Role
-        {
-            public const string User = "User";
-        }
     }
 }

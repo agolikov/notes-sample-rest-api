@@ -1,54 +1,59 @@
-# RestAPI example: Notes API
+# Note Management API - REST API Example
 
-#### The project is an starter example of REST API based on .NET 8.
+This project is a starter example of a REST API built on .NET 8. It provides endpoints for user authentication, CRUD operations on notes, and user-related functionalities such as changing passwords.
 
-This API provides endpoints for user authentication, CRUD operations on notes, and user-related functionalities like changing passwords.
-#### Paths 
+## API Endpoints
 
-1. Authentication:
-    - /auth/signup: POST request for user signup
-    - /auth/signin: POST request for user signin
-2. Notes:
-    - GET request to retrieve notes with various filtering options
-    - POST request to create a new note
-    - PUT request to update an existing note
-    - DELETE request to delete a note by ID
-3. User:
-    - GET request to retrieve user information
-    - POST request to change user password
-#### Security
+### Authentication
+- **POST** `/auth/signup`: User signup
+- **POST** `/auth/signin`: User signin
 
-- Bearer token authentication using JWT Authorization header.
+### Notes
+- **GET** `/notes`: Retrieve notes with various filtering options
+- **POST** `/notes`: Create a new note
+- **PUT** `/notes/{id}`: Update an existing note
+- **DELETE** `/notes/{id}`: Delete a note by ID
 
-#### Tech stack and libraries
+### User
+- **GET** `/user`: Retrieve user information
+- **POST** `/user/password`: Change user password
 
- * .NET 8
- * Entity Framework
- * PostgreSQL 
- * Automapper
- * FluentValidation
- * Identity Model JWT
- * Swagger
- * Docker
- * AutoFixture
- * Moq
- * Nunit
-#### Setup instructions
+## Security
+- Bearer token authentication using JWT in the Authorization header.
 
- 1. Install docker.
- 2. Install .NET 8 SDK.
- 3. Install developers certificates to able to run app locally. [Use this tutorial](https://learn.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-8.0)
- 4. Navigate to project ```src``` directory and run:
-	```docker compose up```
-#### Sample Usage
- 
- 1. Navigate to in the browser:
-   ```https://localhost:5001/swagger/index.html```
- 2. Try ```auth/signup``` out with sample credentials.
- 3. After success response on 2 try ```auth/signin``` with the data from step 2. You should get ```token``` value in the response
- 5. Click ```Authorize``` with the value: 'Bearer ```token```'
- 6. Try GET POST PUT DELETE `/notes` endpoints.
+## Tech Stack & Libraries
+- **.NET 8**
+- **Entity Framework** (ORM)
+- **PostgreSQL** (Database)
+- **AutoMapper** (Object mapping)
+- **FluentValidation** (Validation framework)
+- **Identity Model JWT** (Authentication)
+- **Swagger** (API documentation)
+- **Docker** (Containerization)
+- **AutoFixture** (Test data generation)
+- **Moq** (Mocking framework)
+- **NUnit** (Unit testing framework)
 
-#### Screenshot
+## Setup Instructions
+
+1. Install Docker.
+2. Install .NET 8 SDK.
+3. Install developer certificates to run the app locally. Use [this tutorial](https://learn.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-8.0).
+4. Navigate to the project `src` directory and run:
+
+   ```
+   docker compose up
+	```
+
+## Sample Usage
+
+1. Navigate to https://localhost:6001/swagger/index.html in your browser.
+2. Try the auth/signup endpoint with sample credentials.
+3. Upon successful signup, try auth/signin using the same credentials. You should receive a token in the response.
+4. Click Authorize and enter the token as Bearer {token}.
+
+Test the GET, POST, PUT, DELETE endpoints for /notes.
+
+## Screenshot
 
 ![Note management swagger demo](screen.png)
